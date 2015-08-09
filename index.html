@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>p e r s e c u t e</title>
+</head>
+<body>
+	<div id="cutie"></div>
+	<h1>&copy; John Feltham 2015</h1>
+    <script src="js/TweenLite.min.js"></script> 
+    <script src="js/CSSPlugin.min.js"></script> 
+    <script src="js/EasePack.min.js"></script> 
+    <script src="js/buzz.min.js"></script> 
+    <script type="text/javascript">
+
+    var cutie = document.getElementById("cutie");
+
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = document.body,
+    maxWidth = w.innerWidth || e.clientWidth || g.clientWidth,
+    maxHeight = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+    function init(){
+
+    cutie.style.left = (maxWidth/2) - (cutie.clientWidth/2)+"px";
+    cutie.style.top = (maxHeight/2) - (cutie.clientHeight/2)+"px";
+    cutie.style.backgroundColor = randCol();
+    
+    TweenLite.to(cutie, 1,{autoAlpha:1});
+
+	}
+
+    var beep1 = new buzz.sound( "audio/beep1",{ formats: [ "ogg", "mp3"]});
+    var beep2 = new buzz.sound( "audio/beep2",{ formats: [ "ogg", "mp3"]});
+    var soundArray = new Array(beep1, beep2);
+
+    var cutieColors = new Array("#8c8494", "#837c8b","#8c8494", "#837c8b","#8c8494", "#837c8b","#8c8494");
+    var bgColors = new Array("#8c8494", "#837c8b","#8c8494", "#837c8b","#8c8494", "#837c8b","#8c8494");
+
+    var soundint = 0;
+
+    var randx;
+    var randy;
+    var scale;
+
+    function randCol(){
+    	return('#'+Math.floor(Math.random()*16777215).toString(16));
+    }
+
+    function clicked(event){
+
+    	var randx = Math.random()*(maxWidth-100)+50;
+    	var randy = Math.random()*(maxHeight-100)+50;
+    	    	
+    	TweenLite.to(cutie, 1,{top:randy, left:randx, backgroundColor:randCol()});
+    	soundArray[soundint].play();
+    	flashBackround();
+    	morph();
+
+    	soundint++;
+    	if (soundint > (soundArray.length -1)){
+    		soundint = 0;
+    	}    	
+    }
+
+    function flashBackround(){
+    	var t = 0.08;
+    	for (var i=0; i<7; i++){
+    		TweenLite.to(document.body, t,{backgroundColor:randCol(), delay:i*t, overwrite:0});
+    	}
+    }
+
+    function morph(){
+    	
+    	for (var j = 0; j < 3; j++){
+    		var randScale = Math.random()*1.8+0.2;
+    		TweenLite.to(cutie, 0.25,{scale:randScale, delay:0.25*j, overwrite:0});
+		}
+    }
+
+    cutie.addEventListener("click", clicked);
+
+    init();
+
+    </script>
+</body>
+</html>
